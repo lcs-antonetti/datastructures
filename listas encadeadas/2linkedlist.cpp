@@ -16,10 +16,10 @@ int show_menu()
     cout << "---------- MENU ----------" << endl;
     cout << "1- Inserir ao inicio lista" << endl;
     cout << "2- Inserir ao final da lista" << endl;
-    cout << "3- Mostrar lista - inicio -> fim" << endl;
-    cout << "4- Remover da lista" << endl;
-    cout << "5- Exibir Lista - inicio -> final" << endl;
-    cout << "6- Exibir Lista - final -> inicio" << endl;
+    cout << "3- Inserir apos posicao" << endl;
+    cout << "4- Mostrar lista Final -> Inicio" << endl;
+    cout << "5- Mostrar lista Inicio -> Final" << endl;
+    cout << "6- Remover valor da lista" << endl;
     cout << "7- Sair" << endl;
     cout << "--------------------------" << endl;
 
@@ -66,7 +66,7 @@ void insert_after_value(knot **head)
     knot *novo = (knot *)malloc(sizeof(knot));
     if (*head == nullptr)
     {
-        cout << "A lista esta vazia! O valor sera enterpretado como o primeiro." << endl;
+        cout << "O valor sera enterpretado como o primeiro." << endl;
         novo->next = nullptr;
         novo->prev = nullptr;
         *head = novo;
@@ -95,10 +95,43 @@ void remove_value(knot **head)
 {
     if (*head == nullptr)
     {
-        cout << "A lista esta vazia!" << endl;
-        return;
+        return; // a função de imprimir a lista já acusa que ela esta vazia
     }
     knot *aux = *head;
+    int val = 0;
+    cout << "Selecione qual valor deseja retirar: " << endl;
+    cin >> val;
+    while(aux->num != val && aux != nullptr)
+    {
+        aux = aux -> next;
+    }
+    if(aux == nullptr)
+    {
+        cout << "Valor nao encontrado!" << endl;
+        return;
+    }
+    if(aux->next == nullptr && aux->prev == nullptr)// esse if serve somente para apagar o valor caso seja o unico na lista
+    {
+        *head = nullptr;
+        free(aux);
+        return;
+    }
+    if(aux->prev == nullptr)
+    {
+        *head = aux->next; //lebrar de mudar o *head para não perder a referencia da lista
+        aux->next->prev = nullptr;// isso acontece porque o looping parou na primeira celula
+        free(aux);
+        return;
+    }
+    if(aux->next == nullptr)
+    {
+        aux->prev->next = nullptr;
+        free(aux);
+        return;
+    }
+    aux->prev->next = aux->next;
+    aux->next->prev = aux->prev;
+    free(aux);
 }
 
 void show_from_start(knot **head)
@@ -160,13 +193,19 @@ int main(int argc, char *argv[])
             break;
         case '3':
             show_from_start(&head);
-            break;
-        case '4':
-            show_from_start(&head);
             insert_after_value(&head);
             break;
-        case '5':
+        case '4':
             show_from_end(&head);
+            break;
+        case '5':
+            show_from_start(&head);
+            break;
+        case '6':
+            show_from_start(&head);
+            remove_value(&head);
+            break;
+        case '7':
             cout << "Ate mais!" << endl;
             is_on = false;
             break;
