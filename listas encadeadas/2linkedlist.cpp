@@ -91,8 +91,14 @@ void insert_after_value(knot **head)
     aux->next = novo;
 }
 
-void remove_value()
+void remove_value(knot **head)
 {
+    if (*head == nullptr)
+    {
+        cout << "A lista esta vazia!" << endl;
+        return;
+    }
+    knot *aux = *head;
 }
 
 void show_from_start(knot **head)
