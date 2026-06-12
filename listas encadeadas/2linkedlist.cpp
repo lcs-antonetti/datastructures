@@ -9,7 +9,7 @@ struct knot
     struct knot *prev;
 };
 
-int show_menu()
+char show_menu()
 {
     char op;
 
@@ -55,8 +55,7 @@ void insert_at_end(knot **head)
         return;
     }
     knot *aux = *head; // declara um ponteiro auxiliar para percorrer a lista - pega o valor de head
-    while (aux->next != nullptr)
-        aux = aux->next; // verifica todas as celulas da lista até a achar qual tem o ponteiro next como nullptr
+    while (aux->next != nullptr) aux = aux->next; // verifica todas as celulas da lista até a achar qual tem o ponteiro next como nullptr
     aux->next = novo;    // atual ultima celula passa a apontar para nova ultima celula
     novo->prev = aux;    // nova celula aponta para auxiliar concluindo o duplo encadeamento
 }
@@ -145,8 +144,7 @@ void show_from_start(knot **head)
     while (aux != nullptr)
     {
         cout << "[" << aux->num << "] ";
-        if (aux->next != nullptr)
-            cout << "<--> ";
+        if (aux->next != nullptr) cout << "<--> ";
         aux = aux->next;
     }
     cout << endl;
